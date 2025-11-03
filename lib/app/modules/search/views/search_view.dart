@@ -9,23 +9,22 @@ class SearchView extends GetView<search_ctrl.SearchController> {
 
   @override
   Widget build(BuildContext context) {
-    final textController = TextEditingController();
-
     return LayoutView(
       title: 'Agregar Ciudad',
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          spacing: 20,
           children: [
             TextField(
-              controller: textController,
+              controller: controller.textController,
               decoration: const InputDecoration(
                 labelText: 'Buscar ciudad',
                 border: OutlineInputBorder(),
               ),
               onSubmitted: controller.searchCity,
             ),
-            const SizedBox(height: 20),
+
             Obx(() {
               if (controller.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());

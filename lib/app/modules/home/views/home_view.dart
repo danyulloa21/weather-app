@@ -122,9 +122,7 @@ class HomeView extends GetView<HomeController> {
                           IconButton(
                             tooltip: 'Eliminar',
                             icon: const Icon(Icons.delete_outline),
-                            onPressed: () {
-                              controller.removeCity(city);
-                            },
+                            onPressed: () => controller.removeCity(city),
                           ),
                         ],
                       ),

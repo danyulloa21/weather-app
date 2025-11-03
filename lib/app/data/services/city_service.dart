@@ -59,8 +59,7 @@ class CityService extends GetConnect {
 
     if (!response.isOk) {
       // Si te vuelven a bloquear, Nominatim contesta HTML con 403
-      print('❌ Error Nominatim: ${response.statusCode}');
-      print('❌ Body: ${response.bodyString}');
+
       Get.snackbar(
         'Error',
         'Nominatim bloqueó la solicitud (${response.statusCode}).',
@@ -115,7 +114,7 @@ class CityService extends GetConnect {
         .cast<CityModel>();
   }
 
-  void addCity(CityModel city) {
+  void addCity(CityModel city) async {
     final raw = _box.read<List>(_key) ?? [];
     final newKey = _makeKey(city.name, city.lat, city.lon);
 
@@ -148,7 +147,7 @@ class CityService extends GetConnect {
     toStore['key'] = newKey; // ⭐️ agrega clave compuesta
 
     raw.add(json.encode(toStore));
-    _box.write(_key, raw);
+    await _box.write(_key, raw);
 
     Get.snackbar(
       'Éxito',
@@ -156,6 +155,15 @@ class CityService extends GetConnect {
       backgroundColor: Colors.green,
       colorText: Colors.white,
       snackPosition: SnackPosition.BOTTOM,
+      duration: const Duration(seconds: 3),
+      margin: const EdgeInsets.all(12),
+      borderRadius: 10,
+      icon: const Icon(Icons.check_circle_outline, color: Colors.white),
+      mainButton: TextButton(
+        onPressed: () => Get.offAllNamed('/home'),
+        child: const Text('Ver', style: TextStyle(color: Colors.white)),
+      ),
+      onTap: (_) => Get.offAllNamed('/home'), // 👈 También puedes usar esto
     );
   }
 

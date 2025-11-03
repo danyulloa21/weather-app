@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:weather_app/app/data/models/city_model.dart';
 import 'package:weather_app/app/data/services/city_service.dart';
@@ -8,6 +9,15 @@ class SearchController extends GetxController {
 
   final results = <Map<String, dynamic>>[].obs;
   final isLoading = false.obs;
+
+  final textController = TextEditingController();
+
+  @override
+  void onClose() {
+    textController.dispose();
+    results.clear();
+    super.onClose();
+  }
 
   Future<void> searchCity(String name) async {
     isLoading.value = true;
@@ -25,6 +35,5 @@ class SearchController extends GetxController {
     _service.addCity(city);
     final home = Get.find<HomeController>();
     home.loadCities();
-    Get.back();
   }
 }
