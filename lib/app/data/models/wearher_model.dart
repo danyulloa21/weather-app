@@ -95,4 +95,9 @@ class WeatherModel {
     // ...
     return 'Clima desconocido';
   }
+
+  @override
+  String toString() {
+    return 'WeatherModel(temperatura: $temperatura, humedad: $humedad, symbolCode: $symbolCode, dateTime: $dateTime)';
+  }
 }

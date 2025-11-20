@@ -1,7 +1,10 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:weather_app/app/data/models/city_model.dart';
 import 'package:weather_app/app/data/models/wearher_model.dart';
 import 'package:weather_app/app/data/services/weather_service.dart';
+import 'package:weather_icons/weather_icons.dart';
 
 class WeatherController extends GetxController {
   final CityModel city;
@@ -27,6 +30,7 @@ class WeatherController extends GetxController {
       errorMessage.value = null;
 
       final result = await weatherService.getCurrentWeatherForCity(city);
+      print(result);
       weather.value = result;
     } catch (e) {
       errorMessage.value = 'No se pudo obtener el clima: $e';
@@ -59,28 +63,10 @@ class WeatherController extends GetxController {
     final w = weather.value;
     if (w == null) return '---';
 
-    // Mapa según weather_symbol_1h:idx
-    switch (w.symbolCode) {
-      case 1:
-        return 'Despejado';
-      case 2:
-        return 'Mayormente despejado';
-      case 3:
-        return 'Parcialmente nublado';
-      case 4:
-        return 'Nublado';
-      case 5:
-        return 'Lluvia ligera';
-      case 6:
-        return 'Lluvia';
-      case 7:
-        return 'Tormenta';
-      default:
-        return 'Clima desconocido';
-    }
+    return _obtenerDescripcionClima(w.symbolCode);
   }
 
-  /// Puedes mostrar diferentes iconos en la UI
+  /// Puedes mostrar diferentes iconos en la UI (emoji, si lo sigues usando)
   String get weatherIcon {
     final w = weather.value;
     if (w == null) return '☁️';
@@ -95,13 +81,85 @@ class WeatherController extends GetxController {
       case 4:
         return '☁️';
       case 5:
-        return '🌦️';
-      case 6:
         return '🌧️';
+      case 6:
+        return '🌨️';
       case 7:
-        return '⛈️';
+        return '❄️';
       default:
         return '❓';
+    }
+  }
+
+  /// Icono basado en WeatherIcons (para usar en tu UI con Icon(weatherIconData))
+  IconData get weatherIconData {
+    final w = weather.value;
+    if (w == null) return WeatherIcons.na;
+    return _obtenerIconoClima(w.symbolCode);
+  }
+
+  // ==========================
+  // MÉTODOS PRIVADOS NUEVOS
+  // ==========================
+
+  // Mapa de íconos del clima
+  IconData _obtenerIconoClima(int simbolo) {
+    switch (simbolo) {
+      case 0:
+        return WeatherIcons.na;
+      case 1:
+        return WeatherIcons.day_sunny;
+      case 2:
+        return WeatherIcons.day_sunny_overcast;
+      case 3:
+        return WeatherIcons.day_cloudy;
+      case 4:
+        return WeatherIcons.cloud;
+      case 101:
+        return WeatherIcons.night_clear;
+      case 102:
+        return WeatherIcons.night_alt_cloudy_gusts;
+      case 103:
+        return WeatherIcons.night_partly_cloudy;
+      case 104:
+        return WeatherIcons.night_cloudy;
+      default:
+        return WeatherIcons.na;
+    }
+  }
+
+  String _obtenerDescripcionClima(int simbolo) {
+    switch (simbolo) {
+      case 0:
+        return 'Sin datos';
+      case 1:
+        return 'Despejado';
+      case 2:
+        return 'Mayormente despejado';
+      case 3:
+        return 'Parcialmente Nublado';
+      case 4:
+        return 'Nublado';
+      case 101:
+        return 'Despejado (noche)';
+      case 102:
+        return 'Mayormente despejado (noche)';
+      case 103:
+        return 'Parcialmente nublado (noche)';
+      case 104:
+        return 'Nublado (noche)';
+      default:
+        return 'Desconocido';
+    }
+  }
+
+  String _formatearHora(String? timestamp) {
+    if (timestamp == null || timestamp.isEmpty) return 'Desconocido';
+    try {
+      final fecha = DateTime.parse(timestamp);
+      return DateFormat('HH:mm').format(fecha.toLocal());
+    } catch (e) {
+      return 'Desconocido';
     }
   }
 }

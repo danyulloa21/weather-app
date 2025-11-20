@@ -15,7 +15,7 @@ class WeatherService {
     final nowUtc = DateTime.now().toUtc();
     final dateStr = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(nowUtc);
 
-    // ⭐️ parámetros de Meteomatics:
+    // parámetros de Meteomatics:
     // - t_2m:C → temperatura a 2m en °C
     // - relative_humidity_2m:p → humedad relativa en %
     // - weather_symbol_1h:idx → símbolo general del tiempo de la última hora

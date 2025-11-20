@@ -113,9 +113,10 @@ class WeatherView extends GetView<WeatherController> {
                             ],
                           ),
                         ),
-                        Text(
-                          controller.weatherIcon, // ⭐️ emoji según el símbolo
-                          style: const TextStyle(fontSize: 52),
+                        Icon(
+                          controller.weatherIconData,
+                          size: 52,
+                          color: Colors.white,
                         ),
                       ],
                     ),
