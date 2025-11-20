@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:weather_app/app/modules/weather/bindings/weather_binding.dart';
+import 'package:weather_app/app/modules/weather/views/weather_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/search/views/search_view.dart';
@@ -21,6 +23,12 @@ class AppPages {
       name: Routes.search,
       page: () => const SearchView(),
       binding: SearchBinding(),
+      transition: Transition.rightToLeft, // opcional
+    ),
+    GetPage(
+      name: Routes.weather,
+      page: () => const WeatherView(),
+      binding: WeatherBinding(),
       transition: Transition.rightToLeft, // opcional
     ),
   ];

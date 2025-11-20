@@ -97,16 +97,18 @@ class HomeView extends GetView<HomeController> {
                           onDismissed: (_) {
                             // ⭐️ elimina por modelo completo (usa tu método actualizado)
                             controller.removeCity(city);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Eliminada: ${city.name}'),
+                            Get.snackbar(
+                              'Eliminada',
+                              'Ciudad eliminada: ${city.name}',
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.redAccent.withValues(
+                                alpha: 200,
                               ),
                             );
                           },
                           child: GestureDetector(
                             onTap: () {
-                              // ⭐️ navegación al detalle del clima (ajusta la ruta según tu app)
-                              // Get.toNamed('/city', arguments: city);
+                              Get.toNamed('/weather', arguments: city);
                             },
                             child: Container(
                               decoration: BoxDecoration(
