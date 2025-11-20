@@ -59,77 +59,167 @@ class HomeView extends GetView<HomeController> {
         return RefreshIndicator(
           onRefresh: () async => controller.loadCities(),
           child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: ListView.separated(
+            padding: const EdgeInsets.symmetric(vertical: 24),
+            child: ListView(
               physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: cities.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
-              itemBuilder: (context, index) {
-                final city = cities[index];
-                final keyString = '${city.name}_${city.lat}_${city.lon}';
-                String fmt(double v) => v.toStringAsFixed(4);
+              children: [
+                SizedBox(
+                  height: 260,
+                  child: PageView.builder(
+                    controller: PageController(
+                      viewportFraction: 0.88,
+                    ), // ⭐️ carrusel de ciudades
+                    itemCount: cities.length,
+                    padEnds: false,
+                    itemBuilder: (context, index) {
+                      final city = cities[index];
+                      final keyString = '${city.name}_${city.lat}_${city.lon}';
+                      String fmt(double v) => v.toStringAsFixed(4);
 
-                return Dismissible(
-                  key: ValueKey(keyString),
-                  direction: DismissDirection.endToStart,
-                  background: Container(
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.redAccent,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Icon(Icons.delete, color: Colors.white),
-                  ),
-                  onDismissed: (_) {
-                    // ⭐️ elimina por modelo completo (usa tu método actualizado)
-                    controller.removeCity(city);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Eliminada: ${city.name}')),
-                    );
-                  },
-                  child: Card(
-                    elevation: 1,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      leading: const CircleAvatar(
-                        child: Icon(Icons.wb_sunny_outlined),
-                      ),
-                      title: Text(
-                        city.name,
-                        style: const TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                      subtitle: Text(
-                        'Lat: ${fmt(city.lat)} · Lon: ${fmt(city.lon)}',
-                      ),
-                      trailing: Wrap(
-                        spacing: 8,
-                        children: [
-                          IconButton(
-                            tooltip: 'Ver clima',
-                            icon: const Icon(Icons.thermostat_outlined),
-                            onPressed: () {
-                              // ⭐️ aquí puedes navegar a un detalle si lo agregas
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        child: Dismissible(
+                          key: ValueKey(keyString),
+                          direction: DismissDirection
+                              .up, // ⭐️ elimina hacia arriba (no interfiere con el swipe horizontal)
+                          background: Container(
+                            alignment: Alignment.topCenter,
+                            margin: const EdgeInsets.only(bottom: 16),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(24),
+                              color: Colors.redAccent.withOpacity(0.9),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.only(top: 24.0),
+                              child: Icon(Icons.delete, color: Colors.white),
+                            ),
+                          ),
+                          onDismissed: (_) {
+                            // ⭐️ elimina por modelo completo (usa tu método actualizado)
+                            controller.removeCity(city);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Eliminada: ${city.name}'),
+                              ),
+                            );
+                          },
+                          child: GestureDetector(
+                            onTap: () {
+                              // ⭐️ navegación al detalle del clima (ajusta la ruta según tu app)
                               // Get.toNamed('/city', arguments: city);
                             },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(24),
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Color(0xFF4FC3F7), // azul cielo
+                                    Color(0xFF1976D2), // azul más intenso
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.15),
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 8),
+                                  ),
+                                ],
+                              ),
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              city.name,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              'Lat: ${fmt(city.lat)} · Lon: ${fmt(city.lon)}',
+                                              style: const TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.white70,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const Icon(
+                                        Icons.wb_sunny,
+                                        color: Colors.white,
+                                        size: 40,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Toca para ver el clima detallado',
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: Colors.white70,
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                            tooltip: 'Ver clima',
+                                            icon: const Icon(
+                                              Icons.thermostat_outlined,
+                                              color: Colors.white,
+                                            ),
+                                            onPressed: () {
+                                              // ⭐️ aquí puedes navegar a un detalle si lo agregas
+                                              // Get.toNamed('/city', arguments: city);
+                                            },
+                                          ),
+                                          IconButton(
+                                            tooltip: 'Eliminar',
+                                            icon: const Icon(
+                                              Icons.delete_outline,
+                                              color: Colors.white,
+                                            ),
+                                            onPressed: () =>
+                                                controller.removeCity(city),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          IconButton(
-                            tooltip: 'Eliminar',
-                            icon: const Icon(Icons.delete_outline),
-                            onPressed: () => controller.removeCity(city),
-                          ),
-                        ],
-                      ),
-                    ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ],
             ),
           ),
         );
