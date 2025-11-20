@@ -52,6 +52,12 @@ class WeatherController extends GetxController {
     return w == null ? '-- °C' : '${w.temperatura.toStringAsFixed(1)} °C';
   }
 
+  String get timeLabel {
+    final w = weather.value;
+    if (w == null) return 'Desconocido';
+    return _formatearHora(w.dateTime.toIso8601String());
+  }
+
   /// Texto de humedad: "35 %"
   String get humidityLabel {
     final w = weather.value;
@@ -156,9 +162,12 @@ class WeatherController extends GetxController {
   String _formatearHora(String? timestamp) {
     if (timestamp == null || timestamp.isEmpty) return 'Desconocido';
     try {
-      final fecha = DateTime.parse(timestamp);
-      return DateFormat('HH:mm').format(fecha.toLocal());
+      final fecha = DateTime.parse(timestamp).toLocal();
+      // Ejemplo: "Jueves, 21 de noviembre de 2025 • 07:45 PM"
+      final formato = DateFormat('EEEE, d MMMM yyyy • hh:mm a', 'es_MX');
+      return formato.format(fecha);
     } catch (e) {
+      print(e);
       return 'Desconocido';
     }
   }

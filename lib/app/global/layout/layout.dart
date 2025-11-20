@@ -5,12 +5,14 @@ class LayoutView extends StatelessWidget {
   final String title;
   final Widget body;
   final bool showDrawer;
+  final bool showBack;
 
   const LayoutView({
     super.key,
     required this.title,
     required this.body,
     this.showDrawer = true,
+    this.showBack = false,
   });
 
   @override
@@ -20,6 +22,9 @@ class LayoutView extends StatelessWidget {
         title: Text(title),
         centerTitle: true,
         backgroundColor: Colors.blue,
+        leading: showBack
+            ? const BackButton(color: Colors.white)
+            : (showDrawer ? null : const SizedBox()),
       ),
       drawer: showDrawer ? _buildDrawer(context) : null,
       body: SafeArea(child: body),

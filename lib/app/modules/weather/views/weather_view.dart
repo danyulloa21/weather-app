@@ -11,6 +11,7 @@ class WeatherView extends GetView<WeatherController> {
     return LayoutView(
       // ⭐️ título dinámico con el nombre de la ciudad
       title: controller.city.name,
+      showBack: true,
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
@@ -189,7 +190,7 @@ class WeatherView extends GetView<WeatherController> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Fecha (UTC)'),
-                          Text(weather.dateTime.toIso8601String()),
+                          Text(controller.timeLabel),
                         ],
                       ),
                     ],
