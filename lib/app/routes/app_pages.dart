@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:weather_app/app/modules/credits/bindings/credits_binding.dart';
+import 'package:weather_app/app/modules/credits/views/credits_views.dart';
 import 'package:weather_app/app/modules/weather/bindings/weather_binding.dart';
 import 'package:weather_app/app/modules/weather/views/weather_view.dart';
 import '../modules/home/views/home_view.dart';
@@ -29,6 +31,12 @@ class AppPages {
       name: Routes.weather,
       page: () => const WeatherView(),
       binding: WeatherBinding(),
+      transition: Transition.rightToLeft, // opcional
+    ),
+    GetPage(
+      name: Routes.credits,
+      page: () => const CreditsViews(),
+      binding: CreditsBinding(),
       transition: Transition.rightToLeft, // opcional
     ),
   ];

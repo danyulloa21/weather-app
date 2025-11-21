@@ -1,16 +1,22 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:weather_app/app/data/models/city_model.dart';
 import 'package:weather_app/app/data/models/wearher_model.dart';
 
 class WeatherService {
   // ⭐️ mete aquí tu usuario y contraseña de Meteomatics SOLO para pruebas
-  static const _username = 'universidaddesonora_ulloa_daniel';
-  static const _password = '06nrklU9IK3M5mVDLY0n';
+  void main() async {
+  await dotenv.load(fileName: ".env");
+}
+static String get apiTokenUrl => dotenv.env['meteomatics_api_url'] ?? 'https://login.meteomatics.com/api/v1/token';
+  static String get _username => dotenv.env['meteomatics_user'] ?? '';
+  static String get _password => dotenv.env['meteomatics_pwd'] ?? '';
+  
 
   Future<WeatherModel> getCurrentWeatherForCity(CityModel city) async {
+
     // Fecha actual en UTC con formato Meteomatics
     final nowUtc = DateTime.now().toUtc();
     final dateStr = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(nowUtc);

@@ -70,6 +70,12 @@ class LayoutView extends StatelessWidget {
               route: '/settings',
               current: current,
             ),
+            _drawerItem(
+              icon: Icons.contacts,
+              title: 'Creditos',
+              route: '/credits',
+              current: current,
+            ),
           ],
         ),
       ),
