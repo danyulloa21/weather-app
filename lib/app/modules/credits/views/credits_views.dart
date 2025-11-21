@@ -14,35 +14,16 @@ class CreditsViews extends GetView<CreditsController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.map_outlined,
-                  size: 96,
-                  color: Colors.blueGrey,
+                const Text(
+                  'Integrantes:\nLuis Eduardo Martinez Espinoza\nDaniel Elias Ulloa Mada',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 16),
                 const Text(
-                  'Sin ciudades aún',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Agrega tu primera ciudad para ver el clima actual.',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium?.copyWith(color: Colors.grey[700]),
+                  'Información tomada de:\nMeteomatics AG',
                   textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 24),
-                OutlinedButton.icon(
-                  onPressed: () => Get.toNamed('/search'),
-                  icon: const Icon(Icons.add_location_alt),
-                  label: const Text('Agregar ciudad'),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
-                    ),
-                  ),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
               ],
             ),
